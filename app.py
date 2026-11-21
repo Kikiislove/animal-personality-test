@@ -13,6 +13,27 @@ from itertools import product
 import streamlit as st
 
 
+# 웹앱 접속 비밀번호 확인
+if "password_ok" not in st.session_state:
+    st.session_state.password_ok = False
+
+if not st.session_state.password_ok:
+    st.title("🐾 내 안에 숨어 있는 동물은?")
+
+    password = st.text_input(
+        "접속 비밀번호를 입력해주세요.",
+        type="password"
+    )
+
+    if st.button("입장하기"):
+        if password == st.secrets["APP_PASSWORD"]:
+            st.session_state.password_ok = True
+            st.rerun()
+        else:
+            st.error("비밀번호가 올바르지 않습니다.")
+
+    st.stop()
+
 # 1. 성향 정의: 양수이면 앞 글자, 음수이면 뒤 글자에 가까운 답변입니다.
 # 질문 수가 다른 성향을 비교할 때는 합계 대신 평균(-2~+2)을 사용합니다.
 DIMENSIONS = {
